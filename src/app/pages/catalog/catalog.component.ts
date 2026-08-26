@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CatalogService, Product } from '../../core/catalog.service';
-import { RoleService } from '../../core/role.service';
+import { AuthService } from '../../core/auth.service';
 
 interface ProductDraft {
   name: string;
@@ -28,7 +29,7 @@ export class CatalogComponent {
   isAdding = false;
   newProduct: ProductDraft = { name: '', price: 0, stock: 0, icon: '' };
 
-  constructor(public catalog: CatalogService, public role: RoleService) {}
+  constructor(public catalog: CatalogService, public auth: AuthService, private router: Router) {}
 
   get filteredProducts(): Product[] {
     const term = this.searchTerm.trim().toLowerCase();
@@ -49,6 +50,10 @@ export class CatalogComponent {
 
   toggleFavorite(id: string, event: Event): void {
     event.stopPropagation();
+    if (!this.auth.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.catalog.toggleFavorite(id);
   }
 

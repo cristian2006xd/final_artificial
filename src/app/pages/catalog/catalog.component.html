@@ -2,10 +2,10 @@
   <header class="catalog-header">
     <div>
       <h1>Catálogo</h1>
-      <p>101 categorías inspiradas en el dataset Caltech-101, listas para explorar.</p>
+      <p>101 categorías cuidadosamente curadas, listas para explorar.</p>
     </div>
 
-    <button *ngIf="role.isAdmin" type="button" class="btn btn-primary" (click)="toggleAddForm()">
+    <button *ngIf="auth.isAdmin()" type="button" class="btn btn-primary" (click)="toggleAddForm()">
       {{ isAdding ? '✕ Cancelar' : '+ Agregar producto' }}
     </button>
   </header>
@@ -73,7 +73,7 @@
           </span>
         </div>
 
-        <div class="admin-controls" *ngIf="role.isAdmin">
+        <div class="admin-controls" *ngIf="auth.isAdmin()">
           <button type="button" (click)="startEdit(product, $event)">✏️ Editar</button>
           <button type="button" class="danger" (click)="deleteProduct(product.id, $event)">🗑 Eliminar</button>
         </div>

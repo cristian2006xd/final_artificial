@@ -1,21 +1,8 @@
-import { Component, ElementRef, NgZone, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild, AfterViewChecked, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface ChatMessage {
-  id: string;
-  sender: 'user' | 'bot';
-  text?: string;
-  image?: string;
-  time: Date;
-}
-
-interface Conversation {
-  id: string;
-  title: string;
-  messages: ChatMessage[];
-  updatedAt: Date;
-}
+import { AuthService } from '../core/auth.service';
+import { ChatHistoryService, ChatMessage, Conversation } from '../core/chat-history.service';
 
 declare global {
   interface Window {
@@ -23,8 +10,6 @@ declare global {
     webkitSpeechRecognition: any;
   }
 }
-
-const STORAGE_KEY = 'chatbot_conversations';
 
 @Component({
   selector: 'app-chatbot',
@@ -47,9 +32,11 @@ export class ChatbotComponent implements AfterViewChecked {
   isListening = false;
   micSupported = true;
   isSidebarOpen = false;
+  historyLoading = true;
 
   private recognition: any;
   private shouldScroll = false;
+  private lastUserId: string | null = null;
 
   private readonly greetings = ['hola', 'buenas', 'hey', 'holi', 'que tal', 'buenos dias', 'buenas tardes', 'buenas noches'];
   private readonly thanks = ['gracias', 'thank', 'genial', 'perfecto'];
@@ -65,9 +52,18 @@ export class ChatbotComponent implements AfterViewChecked {
     '¡Buena pregunta! Cuando conecte una API real te podré responder mejor.',
   ];
 
-  constructor(private zone: NgZone) {
-    this.loadConversations();
+  constructor(private zone: NgZone, private history: ChatHistoryService, private auth: AuthService) {
     this.setupSpeechRecognition();
+
+    // Carga inicial y recarga del historial cada vez que cambia la sesión
+    // (login / logout), para no mezclar el historial de invitado con el de una cuenta.
+    effect(() => {
+      const userId = this.auth.currentUser()?.id ?? null;
+      if (userId !== this.lastUserId) {
+        this.lastUserId = userId;
+        this.reloadConversations();
+      }
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -102,49 +98,26 @@ export class ChatbotComponent implements AfterViewChecked {
     return 'Buenas noches';
   }
 
-  private loadConversations(): void {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed: Conversation[] = JSON.parse(raw);
-        this.conversations = parsed.map(c => ({
-          ...c,
-          updatedAt: new Date(c.updatedAt),
-          messages: c.messages.map(m => ({ ...m, time: new Date(m.time) }))
-        }));
-      }
-    } catch {
-      this.conversations = [];
-    }
+  private async reloadConversations(): Promise<void> {
+    this.historyLoading = true;
+    this.conversations = await this.history.load();
 
     if (this.conversations.length === 0) {
-      this.createConversation();
+      await this.createConversation();
     } else {
       this.currentConversationId = this.sortedConversations[0].id;
     }
+    this.historyLoading = false;
+    this.shouldScroll = true;
   }
 
-  private saveConversations(): void {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.conversations));
-    } catch {
-      // storage unavailable or full, ignore
-    }
-  }
-
-  createConversation(): void {
-    const conversation: Conversation = {
-      id: this.genId(),
-      title: 'Nueva conversación',
-      messages: [],
-      updatedAt: new Date()
-    };
+  async createConversation(): Promise<void> {
+    const conversation = await this.history.createConversation();
     this.conversations.unshift(conversation);
     this.currentConversationId = conversation.id;
     this.isSidebarOpen = false;
     this.inputText = '';
     this.selectedImage = null;
-    this.saveConversations();
     this.shouldScroll = true;
   }
 
@@ -160,24 +133,24 @@ export class ChatbotComponent implements AfterViewChecked {
     this.shouldScroll = true;
   }
 
-  deleteConversation(id: string, event: Event): void {
+  async deleteConversation(id: string, event: Event): Promise<void> {
     event.stopPropagation();
     this.conversations = this.conversations.filter(c => c.id !== id);
+    await this.history.deleteConversation(id);
 
     if (this.conversations.length === 0) {
-      this.createConversation();
+      await this.createConversation();
       return;
     }
 
     if (id === this.currentConversationId) {
       this.currentConversationId = this.sortedConversations[0].id;
     }
-    this.saveConversations();
   }
 
   // ---------- Sending messages ----------
 
-  sendMessage(): void {
+  async sendMessage(): Promise<void> {
     const text = this.inputText.trim();
     if (!text && !this.selectedImage) {
       return;
@@ -196,17 +169,20 @@ export class ChatbotComponent implements AfterViewChecked {
     };
     conversation.messages.push(userMessage);
     conversation.updatedAt = new Date();
+    this.history.appendMessage(conversation.id, userMessage);
+
     if (conversation.title === 'Nueva conversación' && text) {
       conversation.title = text.length > 32 ? text.slice(0, 32) + '…' : text;
+      this.history.renameConversation(conversation.id, conversation.title);
     } else if (conversation.title === 'Nueva conversación' && this.selectedImage) {
       conversation.title = '📷 Imagen';
+      this.history.renameConversation(conversation.id, conversation.title);
     }
 
     const hadImage = !!this.selectedImage;
     this.inputText = '';
     this.selectedImage = null;
     this.shouldScroll = true;
-    this.saveConversations();
 
     this.simulateBotResponse(conversation.id, text, hadImage);
   }
@@ -363,14 +339,15 @@ export class ChatbotComponent implements AfterViewChecked {
     if (!conversation) {
       return;
     }
-    conversation.messages.push({
+    const message: ChatMessage = {
       id: this.genId(),
       sender: 'bot',
       text,
       time: new Date()
-    });
+    };
+    conversation.messages.push(message);
     conversation.updatedAt = new Date();
-    this.saveConversations();
+    this.history.appendMessage(conversationId, message);
   }
 
   // ---------- Utils ----------

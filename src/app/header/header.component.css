@@ -97,36 +97,101 @@
   gap: 0.6rem;
 }
 
-.role-switch {
+.login-btn {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #eaeaf5;
-  padding: 0.45rem 0.8rem;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
   font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.83rem;
+  font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
   white-space: nowrap;
 }
 
-.role-switch:hover {
+.login-btn:hover {
   transform: translateY(-1px);
   border-color: rgba(109, 91, 255, 0.5);
+  background: rgba(109, 91, 255, 0.12);
 }
 
-.role-switch.is-admin {
-  background: rgba(255, 207, 125, 0.12);
-  border-color: rgba(255, 207, 125, 0.4);
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.35rem 0.5rem 0.35rem 0.35rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.user-chip.is-admin {
+  background: rgba(255, 207, 125, 0.1);
+  border-color: rgba(255, 207, 125, 0.35);
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d5bff, #ff5ba6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.user-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #eaeaf5;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-role {
+  font-size: 0.66rem;
+  color: #9fa2c9;
+}
+
+.user-chip.is-admin .user-role {
   color: #ffcf7d;
 }
 
-.role-icon {
-  font-size: 0.95rem;
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #9fa2c9;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.logout-btn:hover {
+  color: #ff8ba0;
+  background: rgba(255, 91, 106, 0.12);
 }
 
 .chat-toggle-btn {
@@ -199,7 +264,7 @@
     padding: 0.75rem 1rem;
   }
 
-  .role-label {
+  .user-info {
     display: none;
   }
 }

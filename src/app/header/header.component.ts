@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { RoleService } from '../core/role.service';
+import { AuthService } from '../core/auth.service';
 import { ChatUiService } from '../core/chat-ui.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { ChatUiService } from '../core/chat-ui.service';
 export class HeaderComponent {
   isMenuOpen = false;
 
-  constructor(public role: RoleService, public chatUi: ChatUiService) {}
+  constructor(public auth: AuthService, public chatUi: ChatUiService) {}
 
   closeMenu(): void {
     this.isMenuOpen = false;

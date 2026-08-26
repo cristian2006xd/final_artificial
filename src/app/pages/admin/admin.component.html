@@ -1,9 +1,10 @@
 <section class="admin-page">
   <header class="admin-header">
     <h1>Panel de administración</h1>
+    <p class="welcome" *ngIf="auth.currentUser() as user">Hola, {{ user.name }} 👋</p>
     <p>
-      Visible solo para el rol <strong>Administrador</strong>. Este rol es una simulación en el navegador
-      (guardada en <code>localStorage</code>) hasta que conectes autenticación real en tu backend.
+      Visible solo para el rol <strong>Administrador</strong>. Gestiona el catálogo y los roles de otras
+      cuentas — los cambios se guardan en Supabase para todos los visitantes.
     </p>
   </header>
 
@@ -65,5 +66,42 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <h2 class="section-title">Usuarios</h2>
+  <p class="section-hint">Cambia el rol de cualquier cuenta para darle o quitarle acceso de administrador.</p>
+
+  <div class="table-wrapper">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users(); trackBy: trackByUserId">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge" [class.is-admin]="user.role === 'administrador'">
+              {{ user.role === 'administrador' ? 'Administrador' : 'Cliente' }}
+            </span>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="role-toggle-btn"
+              (click)="setUserRole(user.id, user.role === 'administrador' ? 'cliente' : 'administrador')"
+            >
+              {{ user.role === 'administrador' ? 'Quitar admin' : 'Hacer admin' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="empty-results" *ngIf="!usersLoading && users().length === 0">No hay usuarios registrados todavía.</p>
   </div>
 </section>

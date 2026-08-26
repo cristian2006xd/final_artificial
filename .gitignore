@@ -1,0 +1,11 @@
+# Entorno virtual de Python
+venv/
+ENV/
+env/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Carpeta temporal de subidas (si la usas)
+uploads/

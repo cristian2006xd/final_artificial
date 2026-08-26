@@ -1,0 +1,150 @@
+:host {
+  display: block;
+  background: #0f1220;
+  min-height: calc(100vh - 68px);
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.admin-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  margin-bottom: 1.8rem;
+  animation: fadeUp 0.35s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-header h1 {
+  margin: 0 0 0.4rem;
+  color: #f0f0f7;
+  font-size: 1.7rem;
+}
+
+.admin-header p {
+  margin: 0;
+  color: #9fa2c9;
+  font-size: 0.88rem;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.admin-header code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  animation: fadeUp 0.4s ease-out both;
+}
+
+.stat-card.warning {
+  border-color: rgba(255, 139, 160, 0.4);
+  background: rgba(255, 91, 106, 0.08);
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #cfd0ff;
+}
+
+.stat-card.warning .stat-value {
+  color: #ff8ba0;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: #9fa2c9;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  animation: fadeUp 0.45s ease-out both;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 480px;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #7d80a3;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-table td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #eaeaf5;
+  font-size: 0.88rem;
+}
+
+.admin-table tr.low-stock td {
+  background: rgba(255, 91, 106, 0.06);
+}
+
+.icon-cell {
+  font-size: 1.3rem;
+  width: 40px;
+}
+
+.admin-table input {
+  width: 90px;
+  background: #0f1220;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #eaeaf5;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.admin-table input:focus {
+  outline: none;
+  border-color: #6d5bff;
+}
+
+.admin-table button.danger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.admin-table button.danger:hover {
+  background: rgba(255, 91, 106, 0.15);
+}

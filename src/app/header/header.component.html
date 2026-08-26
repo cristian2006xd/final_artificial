@@ -1,0 +1,36 @@
+<header class="site-header">
+  <a routerLink="/" class="brand" (click)="closeMenu()">
+    <span class="brand-icon">🛍️</span>
+    <span class="brand-name">Caltech101 <strong>Market</strong></span>
+  </a>
+
+  <button type="button" class="menu-toggle" (click)="isMenuOpen = !isMenuOpen" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="site-nav" [class.open]="isMenuOpen">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Inicio</a>
+    <a routerLink="/catalogo" routerLinkActive="active" (click)="closeMenu()">Catálogo</a>
+    <a *ngIf="role.isAdmin" routerLink="/admin" routerLinkActive="active" class="admin-link" (click)="closeMenu()">
+      Panel admin
+    </a>
+  </nav>
+
+  <div class="header-actions">
+    <button
+      type="button"
+      class="role-switch"
+      [class.is-admin]="role.isAdmin"
+      (click)="role.toggleRole()"
+      [title]="'Modo demo — clic para cambiar a ' + (role.isAdmin ? 'Cliente' : 'Administrador')"
+    >
+      <span class="role-icon">{{ role.isAdmin ? '🛠️' : '🧑' }}</span>
+      <span class="role-label">{{ role.isAdmin ? 'Administrador' : 'Cliente' }}</span>
+    </button>
+
+    <button type="button" class="chat-toggle-btn" (click)="chatUi.toggle()" aria-label="Abrir asistente virtual" title="Asistente virtual">
+      <span class="chat-toggle-icon">🤖</span>
+      <span class="chat-toggle-ring" *ngIf="!chatUi.isOpen()"></span>
+    </button>
+  </div>
+</header>

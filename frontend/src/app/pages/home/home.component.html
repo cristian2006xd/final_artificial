@@ -1,0 +1,41 @@
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <p class="hero-eyebrow">Bienvenido a Prisma Market</p>
+  <h1 class="hero-title">Un catálogo con <span>101 categorías</span> para explorar</h1>
+  <p class="hero-subtitle">
+    Un marketplace de ejemplo con catálogo navegable, cuentas con roles de cliente y administrador,
+    y un asistente virtual siempre a mano.
+  </p>
+
+  <div class="hero-actions">
+    <a routerLink="/catalogo" class="btn btn-primary">Ver catálogo</a>
+    <button type="button" class="btn btn-ghost" (click)="chatUi.open()">💬 Habla con el asistente</button>
+  </div>
+</section>
+
+<section class="stats-row">
+  <div class="stat-card" *ngFor="let stat of stats">
+    <span class="stat-value">{{ stat.value }}{{ stat.suffix }}</span>
+    <span class="stat-label">{{ stat.label }}</span>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="featured-header">
+    <h2>Categorías destacadas</h2>
+    <a routerLink="/catalogo" class="see-all">Ver todo →</a>
+  </div>
+
+  <div class="featured-grid">
+    <a
+      routerLink="/catalogo"
+      class="featured-card"
+      *ngFor="let product of featured; let i = index"
+      [style.animation-delay.ms]="i * 60"
+    >
+      <span class="featured-icon">{{ product.icon }}</span>
+      <span class="featured-name">{{ product.name }}</span>
+    </a>
+  </div>
+</section>

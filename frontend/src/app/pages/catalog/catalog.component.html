@@ -1,0 +1,100 @@
+<section class="catalog-page">
+  <header class="catalog-header">
+    <div>
+      <h1>Catálogo</h1>
+      <p>101 categorías cuidadosamente curadas, listas para explorar.</p>
+    </div>
+
+    <button *ngIf="auth.isAdmin()" type="button" class="btn btn-primary" (click)="toggleAddForm()">
+      {{ isAdding ? '✕ Cancelar' : '+ Agregar producto' }}
+    </button>
+  </header>
+
+  <form class="add-form" *ngIf="isAdding" (ngSubmit)="submitNewProduct()">
+    <input type="text" placeholder="Nombre" [(ngModel)]="newProduct.name" name="newName" required />
+    <input type="text" placeholder="Ícono (emoji)" [(ngModel)]="newProduct.icon" name="newIcon" maxlength="4" />
+    <input type="number" placeholder="Precio" [(ngModel)]="newProduct.price" name="newPrice" min="0" step="0.01" />
+    <input type="number" placeholder="Stock" [(ngModel)]="newProduct.stock" name="newStock" min="0" step="1" />
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        placeholder="Buscar categoría..."
+        [(ngModel)]="searchTerm"
+        name="searchTerm"
+      />
+    </div>
+
+    <button
+      type="button"
+      class="favorites-filter"
+      [class.active]="showOnlyFavorites"
+      (click)="showOnlyFavorites = !showOnlyFavorites"
+    >
+      {{ showOnlyFavorites ? '⭐ Solo favoritos' : '☆ Ver favoritos' }}
+    </button>
+  </div>
+
+  <p class="results-count">{{ filteredProducts.length }} categorías encontradas</p>
+
+  <div class="product-grid">
+    <div
+      class="product-card"
+      *ngFor="let product of filteredProducts; let i = index; trackBy: trackById"
+      [style.animation-delay.ms]="(i % 12) * 40"
+    >
+      <ng-container *ngIf="editingId !== product.id; else editForm">
+        <button
+          type="button"
+          class="favorite-btn"
+          [class.active]="isFavorite(product.id)"
+          (click)="toggleFavorite(product.id, $event)"
+          aria-label="Marcar como favorito"
+        >
+          {{ isFavorite(product.id) ? '⭐' : '☆' }}
+        </button>
+
+        <div class="product-icon">{{ product.icon }}</div>
+        <h3 class="product-name">{{ product.name }}</h3>
+
+        <div class="product-rating">
+          <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= product.rating">★</span>
+          <span class="rating-value">{{ product.rating }}</span>
+        </div>
+
+        <div class="product-footer">
+          <span class="product-price">{{ product.price | currency }}</span>
+          <span class="product-stock" [class.low]="product.stock < 5">
+            {{ product.stock < 5 ? 'Quedan ' + product.stock : product.stock + ' en stock' }}
+          </span>
+        </div>
+
+        <div class="admin-controls" *ngIf="auth.isAdmin()">
+          <button type="button" (click)="startEdit(product, $event)">✏️ Editar</button>
+          <button type="button" class="danger" (click)="deleteProduct(product.id, $event)">🗑 Eliminar</button>
+        </div>
+      </ng-container>
+
+      <ng-template #editForm>
+        <div class="edit-form" (click)="$event.stopPropagation()">
+          <input type="text" [(ngModel)]="editDraft.icon" name="editIcon-{{ product.id }}" maxlength="4" placeholder="Ícono" />
+          <input type="text" [(ngModel)]="editDraft.name" name="editName-{{ product.id }}" placeholder="Nombre" />
+          <input type="number" [(ngModel)]="editDraft.price" name="editPrice-{{ product.id }}" min="0" step="0.01" placeholder="Precio" />
+          <input type="number" [(ngModel)]="editDraft.stock" name="editStock-{{ product.id }}" min="0" step="1" placeholder="Stock" />
+          <div class="edit-actions">
+            <button type="button" class="btn btn-primary" (click)="saveEdit(product.id, $event)">Guardar</button>
+            <button type="button" class="btn btn-ghost" (click)="cancelEdit($event)">Cancelar</button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <p class="empty-results" *ngIf="filteredProducts.length === 0">
+    No se encontraron categorías con esos filtros.
+  </p>
+</section>

@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background: #05060d; }
+
+.app-shell { display: flex; flex-direction: row; height: 100vh; width: 100%; background: #0f1220; overflow: hidden; }
+
+.sidebar { width: 280px; background: #12162a; border-right: 1px solid rgba(255, 255, 255, 0.06); display: flex; flex-direction: column; padding: 1rem; gap: 0.75rem; z-index: 20; }
+.new-chat-btn { display: flex; align-items: center; justify-content: center; gap: 0.4rem; background: linear-gradient(135deg, #6d5bff, #ff5ba6); color: #fff; border: none; padding: 0.7rem 1rem; border-radius: 10px; font-weight: 600; cursor: pointer; }
+.conversation-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.3rem; }
+
+.chat-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100vh; }
+.chat-header { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: linear-gradient(135deg, #6d5bff 0%, #ff5ba6 100%); color: #fff; }
+.hamburger-btn { display: none; background: rgba(255, 255, 255, 0.15); border: none; color: #fff; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; }
+
+.chat-window { flex: 1; overflow-y: auto; padding: 1.5rem clamp(1rem, 5vw, 8rem); display: flex; flex-direction: column; gap: 0.9rem; background: #0f1220; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0.6rem; padding: 2rem; }
+.empty-greeting { font-size: 1.8rem; font-weight: 600; color: #fff; }
+.suggestion-grid { display: grid; grid-template-columns: repeat(1, minmax(140px, 1fr)); gap: 0.9rem; margin-top: 1rem; }
+.suggestion-card { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; padding: 1rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; color: #eaeaf5; cursor: pointer; }
+
+.message-row { display: flex; align-items: flex-end; gap: 0.5rem; margin-bottom: 0.5rem; }
+.user-row { justify-content: flex-end; }
+.bot-row { justify-content: flex-start; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; }
+.bubble { max-width: 65%; padding: 0.65rem 0.9rem; border-radius: 18px; font-size: 0.95rem; word-break: break-word; color: #eaeaf5; }
+.bot-bubble { background: #1c2036; border-bottom-left-radius: 4px; }
+.user-bubble { background: linear-gradient(135deg, #6d5bff, #ff5ba6); color: #fff; border-bottom-right-radius: 4px; }
+.message-image { max-width: 100%; border-radius: 12px; margin-bottom: 0.4rem; display: block; }
+
+.input-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.9rem clamp(1rem, 5vw, 8rem); background: #161a2c; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+.hidden-file-input { display: none; }
+.icon-btn { background: transparent; border: none; font-size: 1.3rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; }
+.text-input { flex: 1; border: none; outline: none; background: #0f1220; color: #f0f0f7; padding: 0.7rem 1rem; border-radius: 24px; font-size: 0.95rem; }
+.send-btn { background: linear-gradient(135deg, #6d5bff, #ff5ba6); color: #fff; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+.image-preview { position: relative; display: inline-flex; margin-left: 2rem; padding: 0.5rem; }
+.image-preview img { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; border: 2px solid #6d5bff; }
+.remove-image-btn { position: absolute; top: 0; right: -4px; background: #ff5ba6; color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 0.6rem; cursor: pointer; }
+
+.typing-bubble { display: flex; align-items: center; gap: 4px; padding: 0.85rem 1rem; }
+.typing-dot { width: 7px; height: 7px; border-radius: 50%; background: #b6b6d6; animation: bounce 1.2s infinite ease-in-out; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-6px); opacity: 1; } }

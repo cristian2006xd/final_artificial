@@ -1,0 +1,212 @@
+:host {
+  display: block;
+  background: #0f1220;
+  min-height: calc(100vh - 68px);
+}
+
+.login-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 68px);
+  padding: 3rem 1.5rem;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.login-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(80vw, 640px);
+  height: min(80vw, 640px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(109, 91, 255, 0.28), rgba(255, 91, 166, 0.14) 45%, transparent 72%);
+  filter: blur(20px);
+  z-index: -1;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+  50% { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2.2rem 2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-icon {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.login-card h1 {
+  margin: 0;
+  text-align: center;
+  color: #f0f0f7;
+  font-size: 1.4rem;
+}
+
+.login-subtitle {
+  margin: -0.4rem 0 0.2rem;
+  text-align: center;
+  color: #9fa2c9;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field span:first-child {
+  font-size: 0.8rem;
+  color: #b7bad6;
+  font-weight: 500;
+}
+
+.field input {
+  background: #0f1220;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #eaeaf5;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #6d5bff;
+  box-shadow: 0 0 0 2px rgba(109, 91, 255, 0.25);
+}
+
+.field-error {
+  color: #ff8ba0;
+  font-size: 0.75rem;
+}
+
+.mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  background: #0f1220;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.mode-tabs button {
+  background: transparent;
+  border: none;
+  color: #9fa2c9;
+  padding: 0.5rem;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mode-tabs button.active {
+  background: linear-gradient(135deg, #6d5bff, #ff5ba6);
+  color: #fff;
+}
+
+.banner {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.banner.error {
+  background: rgba(255, 91, 106, 0.12);
+  border: 1px solid rgba(255, 91, 106, 0.35);
+  color: #ff8ba0;
+}
+
+.banner.info {
+  background: rgba(56, 255, 156, 0.1);
+  border: 1px solid rgba(56, 255, 156, 0.3);
+  color: #7dffc0;
+}
+
+.btn-submit {
+  margin-top: 0.4rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6d5bff, #ff5ba6);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 46px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(109, 91, 255, 0.35);
+}
+
+.btn-submit:disabled {
+  opacity: 0.85;
+  cursor: wait;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+
+.dot:nth-child(2) { animation-delay: 0.15s; }
+.dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+.back-link {
+  text-align: center;
+  color: #7d80a3;
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: color 0.15s ease;
+}
+
+.back-link:hover {
+  color: #eaeaf5;
+}

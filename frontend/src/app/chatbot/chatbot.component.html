@@ -1,0 +1,159 @@
+<div class="app-shell">
+  <aside class="sidebar" [class.open]="isSidebarOpen">
+    <button type="button" class="new-chat-btn" (click)="createConversation()">
+      <span>+</span> Nueva conversación
+    </button>
+
+    <div class="conversation-list">
+      <div
+        *ngFor="let conv of sortedConversations; trackBy: trackByConvId"
+        class="conversation-item"
+        [class.active]="conv.id === currentConversationId"
+        (click)="selectConversation(conv.id)"
+      >
+        <span class="conv-icon">💬</span>
+        <span class="conv-title">{{ conv.title }}</span>
+        <button
+          type="button"
+          class="delete-conv-btn"
+          (click)="deleteConversation(conv.id, $event)"
+          aria-label="Eliminar conversación"
+          title="Eliminar conversación"
+        >
+          🗑
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" *ngIf="isSidebarOpen" (click)="isSidebarOpen = false"></div>
+
+  <div class="chat-panel">
+    <header class="chat-header">
+      <button type="button" class="hamburger-btn" (click)="isSidebarOpen = !isSidebarOpen" aria-label="Abrir historial">
+        ☰
+      </button>
+      <div class="bot-avatar">🤖</div>
+      <div class="header-text">
+        <h1>Asistente Virtual</h1>
+        <span class="status">
+          <span class="status-dot"></span>
+          En línea · respuestas básicas
+        </span>
+      </div>
+    </header>
+
+    <div class="chat-window" #scrollContainer>
+      <div class="empty-state" *ngIf="messages.length === 0">
+        <div class="empty-glow"></div>
+
+        <p class="empty-eyebrow">{{ greeting }}</p>
+        <h2 class="empty-greeting">¿En qué puedo ayudarte hoy?</h2>
+
+        <div class="suggestion-grid">
+          <button
+            type="button"
+            class="suggestion-card"
+            [class.disabled]="!micSupported"
+            (click)="toggleMic()"
+            [title]="micSupported ? 'Hablar con el asistente' : 'Micrófono no soportado en este navegador'"
+          >
+            <span class="suggestion-icon">🎤</span>
+            <span class="suggestion-title">Háblame</span>
+            <span class="suggestion-desc">Usa tu voz y te escucho</span>
+          </button>
+
+          <button type="button" class="suggestion-card" (click)="focusInput()">
+            <span class="suggestion-icon">⌨️</span>
+            <span class="suggestion-title">Escríbeme</span>
+            <span class="suggestion-desc">Cuéntame qué necesitas</span>
+          </button>
+
+          <button type="button" class="suggestion-card" (click)="triggerFileSelect()">
+            <span class="suggestion-icon">📷</span>
+            <span class="suggestion-title">Sube una imagen</span>
+            <span class="suggestion-desc">Comparte una foto conmigo</span>
+          </button>
+
+          <button type="button" class="suggestion-card" (click)="useSamplePrompt('¿Qué puedes hacer?')">
+            <span class="suggestion-icon">💡</span>
+            <span class="suggestion-title">Dame una idea</span>
+            <span class="suggestion-desc">Prueba una pregunta rápida</span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        *ngFor="let message of messages; trackBy: trackByMessageId"
+        class="message-row"
+        [class.user-row]="message.sender === 'user'"
+        [class.bot-row]="message.sender === 'bot'"
+      >
+        <div class="avatar" *ngIf="message.sender === 'bot'">🤖</div>
+
+        <div class="bubble" [class.user-bubble]="message.sender === 'user'" [class.bot-bubble]="message.sender === 'bot'">
+          <img *ngIf="message.image" [src]="message.image" alt="Imagen enviada" class="message-image" />
+          <p *ngIf="message.text">{{ message.text }}</p>
+          <span class="timestamp">{{ message.time | date: 'shortTime' }}</span>
+        </div>
+
+        <div class="avatar" *ngIf="message.sender === 'user'">🧑</div>
+      </div>
+
+      <div class="message-row bot-row" *ngIf="isTyping">
+        <div class="avatar">🤖</div>
+        <div class="bubble bot-bubble typing-bubble">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="image-preview" *ngIf="selectedImage">
+      <img [src]="selectedImage" alt="Vista previa" />
+      <button type="button" class="remove-image-btn" (click)="removeSelectedImage()" aria-label="Quitar imagen">✕</button>
+    </div>
+
+    <form class="input-bar" (ngSubmit)="sendMessage()">
+      <input
+        #fileInput
+        type="file"
+        accept="image/*"
+        class="hidden-file-input"
+        (change)="onFileSelected($event)"
+      />
+
+      <button type="button" class="icon-btn" (click)="triggerFileSelect()" title="Adjuntar imagen" aria-label="Adjuntar imagen">
+        📎
+      </button>
+
+      <button
+        type="button"
+        class="icon-btn mic-btn"
+        [class.listening]="isListening"
+        [disabled]="!micSupported"
+        (click)="toggleMic()"
+        [title]="micSupported ? 'Hablar' : 'Micrófono no soportado en este navegador'"
+        aria-label="Usar micrófono"
+      >
+        🎤
+      </button>
+
+      <input
+        #textInput
+        type="text"
+        class="text-input"
+        placeholder="Escribe un mensaje..."
+        [(ngModel)]="inputText"
+        name="inputText"
+        (keydown.enter)="onEnterKey($event)"
+        [class.listening-input]="isListening"
+      />
+
+      <button type="submit" class="send-btn" [disabled]="!inputText.trim() && !selectedImage" aria-label="Enviar mensaje">
+        ➤
+      </button>
+    </form>
+  </div>
+</div>

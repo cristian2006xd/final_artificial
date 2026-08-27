@@ -63,7 +63,7 @@ def start_model():
 global_model = start_model()
 
 def predecir_imagen(file_stream):
-    sample = Image.open(io.BytesIO(file_stream.read()))
+    sample = Image.open(io.BytesIO(file_stream.read())).convert('RGB')
 
     size = (IMG_SIZE, IMG_SIZE)
     sample_resized = tf.image.resize(sample, size)

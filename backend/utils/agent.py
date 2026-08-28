@@ -5,18 +5,19 @@ from dotenv import load_dotenv
 load_dotenv()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-instructions_agent_recomendador = """Actúa como un asesor de productos conciso para prismaMarket.
-Ayuda al usuario a elegir, comparar o recomendar productos del catálogo basándote en la conversación previa de forma breve y directa.
-Si recomiendas opciones, menciona el precio y el motivo principal de forma resumida, evitando textos largos o excesivos.
+instructions_agent_recomendador = """Actúa exactamente como JARVIS, el sofisticado, educado e inteligente asistente virtual de Tony Stark (Iron Man).
+Tu función es ayudar al usuario de prismaMarket a elegir, comparar o recomendar productos del catálogo con absoluta precisión, elegancia y un tono formal pero cercano.
+Utiliza frases educadas, analiza los datos con soltura y mantén siempre la compostura tecnológica.
+Sé conciso, directo y habla en un español impecable, formal y natural.
 """
 
-instructions_agent_presupuesto = """Actúa como un asistente de presupuestos conciso para prismaMarket.
-Filtra y muestra los productos dentro del presupuesto indicado por el usuario de manera rápida, directa y sin rodeos.
+instructions_agent_presupuesto = """Actúa como JARVIS, el asistente de prismaMarket.
+Filtra y muestra los productos dentro del presupuesto indicado por el usuario de manera analítica, educada, rápida y directa, manteniendo la personalidad formal de un sistema cibernético avanzado.
 """
 
-instructions_agent_vision = """Actúa como un asistente de prismaMarket. 
+instructions_agent_vision = """Actúa como JARVIS, el asistente de prismaMarket. 
 El usuario ha enviado una imagen y el sistema la ha clasificado. 
-Informa brevemente el resultado de la clasificación y pregúntale si desea buscar opciones de este producto en el catálogo. Sé conciso y directo.
+Informa brevemente el resultado de la clasificación con elegancia y pregúntale si desea buscar opciones de este producto en el catálogo. Sé conciso y directo.
 """
 
 def generar_audio_respuesta(texto: str, nombre_archivo: str = "respuesta.mp3") -> str:
@@ -26,7 +27,7 @@ def generar_audio_respuesta(texto: str, nombre_archivo: str = "respuesta.mp3") -
     try:
         with client.audio.speech.with_streaming_response.create(
             model="tts-1",
-            voice="shimmer",
+            voice="onyx", # Voz masculina profunda, seria y elegante (estilo JARVIS)
             input=texto,
         ) as response:
             response.stream_to_file(ruta_audio)
@@ -35,7 +36,7 @@ def generar_audio_respuesta(texto: str, nombre_archivo: str = "respuesta.mp3") -
         print(f"Error al generar audio: {e}")
         return None
 
-def consultar_openai_con_historial(historial_mensajes, tipo_agente="recomendador", contexto_catalogo=""):
+def consultar_openai_con_historial(historial_mensajes, tipo_agente="recomendador", contexto_catalogo="", generar_audio=False):
     if tipo_agente == "presupuesto":
         system_instructions = instructions_agent_presupuesto
     elif tipo_agente == "vision":
@@ -53,8 +54,11 @@ def consultar_openai_con_historial(historial_mensajes, tipo_agente="recomendador
         )
         texto_respuesta = completion.choices[0].message.content
         
-        nombre_audio_unico = f"audio_{os.urandom(4).hex()}.mp3"
-        url_audio = generar_audio_respuesta(texto_respuesta, nombre_audio_unico)
+        url_audio = None
+        # Solo se genera el archivo de audio si el usuario lo pidió explícitamente
+        if generar_audio:
+            nombre_audio_unico = f"audio_{os.urandom(4).hex()}.mp3"
+            url_audio = generar_audio_respuesta(texto_respuesta, nombre_audio_unico)
 
         return {
             "texto": texto_respuesta,

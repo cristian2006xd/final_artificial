@@ -49,6 +49,10 @@ def predict():
     catalogo_texto = obtener_catalogo_desde_supabase()
     contexto_con_usuario = f"Estás atendiendo al usuario autenticado: {usuario_email}.\n\n{catalogo_texto}"
 
+    # Detección de palabras clave para decidir si se genera audio o no
+    palabras_audio = ["audio", "dime", "nota de voz", "háblame", "escuchar"]
+    quiere_audio = any(palabra in texto_usuario.lower() for palabra in palabras_audio)
+
     try:
         if tiene_archivo:
             file = request.files['file']
@@ -61,7 +65,7 @@ def predict():
             )
             historial.append({"role": "user", "content": prompt_vision})
             
-            resultado_ia = consultar_openai_con_historial(historial, tipo_agente="vision", contexto_catalogo=contexto_con_usuario)
+            resultado_ia = consultar_openai_con_historial(historial, tipo_agente="vision", contexto_catalogo=contexto_con_usuario, generar_audio=quiere_audio)
             respuesta_ia = resultado_ia["texto"]
             audio_url = resultado_ia.get("audio_url")
             audio_completo_url = f"http://127.0.0.1:5000{audio_url}" if audio_url else None
@@ -82,7 +86,7 @@ def predict():
 
             tipo_agente = "presupuesto" if ("presupuesto" in texto_usuario.lower() or "$" in texto_usuario) else "recomendador"
             
-            resultado_ia = consultar_openai_con_historial(historial, tipo_agente=tipo_agente, contexto_catalogo=contexto_con_usuario)
+            resultado_ia = consultar_openai_con_historial(historial, tipo_agente=tipo_agente, contexto_catalogo=contexto_con_usuario, generar_audio=quiere_audio)
             respuesta_ia = resultado_ia["texto"]
             audio_url = resultado_ia.get("audio_url")
             audio_completo_url = f"http://127.0.0.1:5000{audio_url}" if audio_url else None

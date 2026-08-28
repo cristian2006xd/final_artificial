@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Surfaces */
+  --bg: #0a0a0e;
+  --bg-elevated: #101019;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --border: rgba(212, 175, 55, 0.16);
+  --border-strong: rgba(212, 175, 55, 0.4);
+
+  /* Accents */
+  --gold: #d4af37;
+  --gold-soft: #f1d9a0;
+  --gold-deep: #a9822a;
+  --emerald: #1f7a63;
+  --emerald-light: #4fd8b8;
+  --rose: #e0637a;
+  --rose-soft: rgba(224, 99, 122, 0.14);
+
+  /* Text */
+  --ink: #f4f1ea;
+  --ink-soft: #c9c6bd;
+  --ink-muted: #8b887f;
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, #a9822a 0%, #d4af37 50%, #f1d9a0 100%);
+  --gradient-jewel: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
+  --gradient-text: linear-gradient(135deg, #f1d9a0 0%, #d4af37 45%, #4fd8b8 100%);
+
+  /* Type */
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-body: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}

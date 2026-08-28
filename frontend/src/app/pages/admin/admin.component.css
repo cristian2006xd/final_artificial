@@ -1,0 +1,223 @@
+:host {
+  display: block;
+  background: var(--bg);
+  min-height: calc(100vh - 68px);
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.admin-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  margin-bottom: 1.8rem;
+  animation: fadeUp 0.35s ease-out both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-header h1 {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.admin-header p {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.admin-header .welcome {
+  color: var(--gold-soft);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+}
+
+.admin-header code {
+  background: var(--surface-hover);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  animation: fadeUp 0.4s ease-out both;
+}
+
+.stat-card.warning {
+  border-color: rgba(224, 99, 122, 0.4);
+  background: var(--rose-soft);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--gold-soft);
+}
+
+.stat-card.warning .stat-value {
+  color: var(--rose);
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  animation: fadeUp 0.45s ease-out both;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 480px;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.admin-table tr.low-stock td {
+  background: rgba(224, 99, 122, 0.06);
+}
+
+.icon-cell {
+  font-size: 1.3rem;
+  width: 40px;
+}
+
+.icon-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+.admin-table input {
+  width: 90px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.admin-table input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.admin-table button.danger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.admin-table button.danger:hover {
+  background: var(--rose-soft);
+}
+
+.section-title {
+  margin: 2.2rem 0 0.3rem;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.section-hint {
+  margin: 0 0 1rem;
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--surface-hover);
+  color: var(--ink-soft);
+}
+
+.role-badge.is-admin {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold-soft);
+}
+
+.role-toggle-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.role-toggle-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+}
+
+.empty-results {
+  text-align: center;
+  color: var(--ink-muted);
+  padding: 1.5rem 0;
+  margin: 0;
+}

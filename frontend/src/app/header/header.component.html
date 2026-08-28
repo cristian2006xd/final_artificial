@@ -1,0 +1,46 @@
+<header class="site-header">
+  <a routerLink="/" class="brand" (click)="closeMenu()">
+    <span class="brand-icon">◆</span>
+    <span class="brand-name">Prisma <strong>Market</strong></span>
+  </a>
+
+  <button type="button" class="menu-toggle" (click)="isMenuOpen = !isMenuOpen" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="site-nav" [class.open]="isMenuOpen">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Inicio</a>
+    <a routerLink="/catalogo" routerLinkActive="active" (click)="closeMenu()">Catálogo</a>
+    <a routerLink="/contacto" routerLinkActive="active" (click)="closeMenu()">Contacto</a>
+    <a *ngIf="auth.isAdmin()" routerLink="/admin" routerLinkActive="active" class="admin-link" (click)="closeMenu()">
+      Panel admin
+    </a>
+  </nav>
+
+  <div class="header-actions">
+    <ng-container *ngIf="auth.isLoggedIn(); else guestActions">
+      <div class="user-chip" [class.is-admin]="auth.isAdmin()">
+        <span class="user-avatar">{{ (auth.currentUser()?.name || '?').charAt(0).toUpperCase() }}</span>
+        <span class="user-info">
+          <span class="user-name">{{ auth.currentUser()?.name }}</span>
+          <span class="user-role">{{ auth.isAdmin() ? 'Administrador' : 'Cliente' }}</span>
+        </span>
+        <button type="button" class="logout-btn" (click)="auth.logout()" title="Cerrar sesión" aria-label="Cerrar sesión">
+          ⏻
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #guestActions>
+      <a routerLink="/login" class="login-btn" (click)="closeMenu()">Iniciar sesión</a>
+    </ng-template>
+
+    <button type="button" class="chat-toggle-btn" (click)="chatUi.toggle()" aria-label="Abrir asistente virtual" title="Asistente virtual">
+      <span class="chat-toggle-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="19" height="19" aria-hidden="true">
+          <path d="M12 2c.4 3.6 1.2 6 2.6 7.4C16 10.8 18.4 11.6 22 12c-3.6.4-6 1.2-7.4 2.6C13.2 16 12.4 18.4 12 22c-.4-3.6-1.2-6-2.6-7.4C8 13.2 5.6 12.4 2 12c3.6-.4 6-1.2 7.4-2.6C10.8 8 11.6 5.6 12 2Z"/>
+        </svg>
+      </span>
+      <span class="chat-toggle-ring" *ngIf="!chatUi.isOpen()"></span>
+    </button>
+  </div>
+</header>

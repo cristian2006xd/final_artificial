@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificador Caltech101</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <button type="button" class="new-chat-btn" id="newChatBtn">
+                <span>+</span> Nueva consulta
+            </button>
+            <div class="conversation-list" id="convList"></div>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <div class="chat-panel">
+            <header class="chat-header">
+                <button type="button" class="hamburger-btn" id="hamburgerBtn">☰</button>
+                <div class="bot-avatar">🤖</div>
+                <div class="header-text">
+                    <h1>Clasificador Caltech101</h1>
+                    <span class="status">
+                        <span class="status-dot"></span>
+                        Modelo activo (EfficientNetB0)
+                    </span>
+                </div>
+            </header>
+
+            <div class="chat-window" id="scrollContainer">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-glow"></div>
+                    <p class="empty-eyebrow">Bienvenido</p>
+                    <h2 class="empty-greeting">Sube una imagen para clasificar</h2>
+                    <div class="suggestion-grid">
+                        <button type="button" class="suggestion-card" id="suggFile">
+                            <span class="suggestion-icon">📷</span>
+                            <span class="suggestion-title">Subir foto</span>
+                            <span class="suggestion-desc">Analizar con Caltech101</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="messagesContainer"></div>
+                <div class="message-row bot-row" id="typingIndicator" style="display: none;">
+                    <div class="avatar">🤖</div>
+                    <div class="bubble bot-bubble typing-bubble">
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-preview" id="imagePreviewContainer" style="display: none;">
+                <img id="previewImg" src="" alt="Vista previa" />
+                <button type="button" class="remove-image-btn" id="removeImgBtn">✕</button>
+            </div>
+
+            <form class="input-bar" id="chatForm">
+                <input type="file" id="fileInput" accept="image/*" class="hidden-file-input" />
+                <button type="button" class="icon-btn" id="attachBtn" title="Adjuntar imagen">📎</button>
+                <input type="text" id="textInput" class="text-input" placeholder="Sube una imagen o escribe un mensaje..." />
+                <button type="submit" class="send-btn" id="sendBtn">➤</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

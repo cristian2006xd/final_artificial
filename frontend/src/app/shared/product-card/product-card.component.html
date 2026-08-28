@@ -1,0 +1,59 @@
+<div class="product-card">
+  <ng-container *ngIf="!isEditing; else editForm">
+    <div class="product-media">
+      <img
+        *ngIf="image as imgUrl; else iconFallback"
+        [src]="imgUrl"
+        [alt]="product.name"
+        loading="lazy"
+        class="product-photo"
+      />
+      <ng-template #iconFallback>
+        <div class="icon-fallback">{{ product.icon }}</div>
+      </ng-template>
+
+      <span class="stock-badge" [class.low]="product.stock < 5">
+        {{ product.stock < 5 ? 'Quedan ' + product.stock : 'En stock' }}
+      </span>
+
+      <button
+        type="button"
+        class="favorite-btn"
+        [class.active]="isFavorite()"
+        (click)="toggleFavorite($event)"
+        aria-label="Marcar como favorito"
+      >
+        {{ isFavorite() ? '★' : '☆' }}
+      </button>
+
+      <div class="admin-controls" *ngIf="auth.isAdmin()">
+        <button type="button" (click)="startEdit($event)" aria-label="Editar">✏️</button>
+        <button type="button" class="danger" (click)="deleteProduct($event)" aria-label="Eliminar">🗑</button>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <h3 class="product-name">{{ product.name }}</h3>
+
+      <div class="product-rating">
+        <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= product.rating">★</span>
+        <span class="rating-value">{{ product.rating }}</span>
+      </div>
+
+      <span class="product-price">{{ product.price | currency }}</span>
+    </div>
+  </ng-container>
+
+  <ng-template #editForm>
+    <div class="edit-form" (click)="$event.preventDefault(); $event.stopPropagation()">
+      <input type="text" [(ngModel)]="editDraft.icon" name="editIcon-{{ product.id }}" maxlength="4" placeholder="Ícono" />
+      <input type="text" [(ngModel)]="editDraft.name" name="editName-{{ product.id }}" placeholder="Nombre" />
+      <input type="number" [(ngModel)]="editDraft.price" name="editPrice-{{ product.id }}" min="0" step="0.01" placeholder="Precio" />
+      <input type="number" [(ngModel)]="editDraft.stock" name="editStock-{{ product.id }}" min="0" step="1" placeholder="Stock" />
+      <div class="edit-actions">
+        <button type="button" class="btn btn-primary" (click)="saveEdit($event)">Guardar</button>
+        <button type="button" class="btn btn-ghost" (click)="cancelEdit($event)">Cancelar</button>
+      </div>
+    </div>
+  </ng-template>
+</div>

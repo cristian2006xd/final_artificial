@@ -1,0 +1,115 @@
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">✦ Bienvenido a Prisma Market ✦</p>
+      <h1 class="hero-title">
+        Compra guiado
+        <span>por inteligencia artificial</span>
+      </h1>
+      <p class="hero-subtitle">
+        Un marketplace de ejemplo con catálogo navegable, un clasificador de imágenes que reconoce
+        101 categorías y un asistente virtual que recomienda productos en tiempo real.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/catalogo" class="btn btn-primary">Ver catálogo</a>
+        <button type="button" class="btn btn-ghost" (click)="chatUi.open()">Habla con el asistente</button>
+      </div>
+
+      <div class="hero-feature-row">
+        <div class="feature-pill">
+          <span class="feature-pill-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true">
+              <path d="M12 2c.4 3.6 1.2 6 2.6 7.4C16 10.8 18.4 11.6 22 12c-3.6.4-6 1.2-7.4 2.6C13.2 16 12.4 18.4 12 22c-.4-3.6-1.2-6-2.6-7.4C8 13.2 5.6 12.4 2 12c3.6-.4 6-1.2 7.4-2.6C10.8 8 11.6 5.6 12 2Z"/>
+            </svg>
+          </span>
+          <span>Asistente con IA</span>
+        </div>
+        <div class="feature-pill">
+          <span class="feature-pill-icon">◈</span>
+          <span>Reconoce imágenes</span>
+        </div>
+        <div class="feature-pill">
+          <span class="feature-pill-icon">⬡</span>
+          <span>101 categorías reales</span>
+        </div>
+        <div class="feature-pill">
+          <span class="feature-pill-icon">◇</span>
+          <span>Explora sin registro</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-showcase">
+      <div class="showcase-frame">
+        <div class="showcase-bar">
+          <span class="showcase-dot"></span>
+          <span class="showcase-dot"></span>
+          <span class="showcase-dot"></span>
+          <span class="showcase-url">prismamarket.app</span>
+        </div>
+
+        <div class="showcase-body">
+          <div class="mock-row mock-row-user">
+            <div class="mock-bubble mock-bubble-user">Busco algo de audio, presupuesto $60</div>
+          </div>
+
+          <div class="mock-row mock-row-bot">
+            <span class="mock-avatar">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13" aria-hidden="true">
+                <path d="M12 2c.4 3.6 1.2 6 2.6 7.4C16 10.8 18.4 11.6 22 12c-3.6.4-6 1.2-7.4 2.6C13.2 16 12.4 18.4 12 22c-.4-3.6-1.2-6-2.6-7.4C8 13.2 5.6 12.4 2 12c3.6-.4 6-1.2 7.4-2.6C10.8 8 11.6 5.6 12 2Z"/>
+              </svg>
+            </span>
+            <div class="mock-bubble mock-bubble-bot">
+              Encontré estas opciones ideales para ti
+              <div class="mock-thumbs">
+                <img *ngFor="let thumb of mockupThumbs" [src]="thumb" alt="" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-chip chip-1">★</div>
+      <div class="float-chip chip-2">⬡</div>
+      <div class="float-chip chip-3">◇</div>
+
+      <div class="stat-stamp">
+        <span class="stamp-number">101</span>
+        <span class="stamp-label">categorías<br />reales</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-bar">
+  <ng-container *ngFor="let stat of stats; let last = last">
+    <div class="stat-item">
+      <span class="stat-value">{{ stat.value }}{{ stat.suffix }}</span>
+      <span class="stat-label">{{ stat.label }}</span>
+    </div>
+    <span class="stat-divider" *ngIf="!last"></span>
+  </ng-container>
+</section>
+
+<section class="featured">
+  <div class="featured-header">
+    <div>
+      <p class="featured-eyebrow">Sugerencias de hoy</p>
+      <h2>Categorías destacadas</h2>
+    </div>
+    <a routerLink="/catalogo" class="see-all">Ver todo el catálogo →</a>
+  </div>
+
+  <div class="featured-grid">
+    <a
+      routerLink="/catalogo"
+      class="featured-link"
+      *ngFor="let product of featured; let i = index"
+    >
+      <app-product-card [product]="product" [style.animation-delay.ms]="i * 40"></app-product-card>
+    </a>
+  </div>
+</section>
